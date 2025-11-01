@@ -7,6 +7,7 @@ PBIR is a new format for Power BI files that stores data in a more structured wa
 
 import json
 import os
+import tempfile
 from pathlib import Path
 from typing import Dict, Any, Optional
 
@@ -230,13 +231,13 @@ def main():
     
     # Save to a file
     print("\n5. Saving to file...")
-    output_path = "/tmp/example_pbir"
-    handler.save(output_path)
+    output_path = Path(tempfile.gettempdir()) / "example_pbir"
+    handler.save(str(output_path))
     print(f"   Saved to: {output_path}/definition.pbir")
     
     # Load it back
     print("\n6. Loading from file...")
-    handler2 = PBIRHandler(output_path)
+    handler2 = PBIRHandler(str(output_path))
     info2 = handler2.get_info()
     print(f"   Loaded: {info2['name']} with {info2['table_count']} tables")
     
